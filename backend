@@ -1,0 +1,39 @@
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+# Replace this dictionary with actual API data or API calls
+weather_data = {
+    "2023-08-01": {"temp": 28, "wind_speed": 10, "pressure": 1012},
+    "2023-08-02": {"temp": 30, "wind_speed": 12, "pressure": 1010},
+    # Add more data for different dates here
+}
+
+def get_weather(date):
+    return weather_data[date]["temp"]
+
+def get_wind_speed(date):
+    return weather_data[date]["wind_speed"]
+
+def get_pressure(date):
+    return weather_data[date]["pressure"]
+
+@app.route('/get_data', methods=['POST'])
+def get_data():
+    data = request.get_json()
+    choice = data["choice"]
+    date = data["date"]
+
+    if choice == 1:
+        result = get_weather(date)
+    elif choice == 2:
+        result = get_wind_speed(date)
+    elif choice == 3:
+        result = get_pressure(date)
+    else:
+        return jsonify({"error": "Invalid choice"}), 400
+
+    return jsonify({"result": result}), 200
+
+if __name__ == '__main__':
+    app.run(debug=True)
