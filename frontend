@@ -1,0 +1,45 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const App = () => {
+  const [choice, setChoice] = useState(0);
+  const [date, setDate] = useState('');
+  const [result, setResult] = useState('');
+
+  const handleGetResult = async () => {
+    try {
+      const response = await axios.post('/get_data', { choice, date });
+      setResult(response.data.result);
+    } catch (error) {
+      setResult('Error: Invalid choice or date');
+    }
+  };
+
+  return (
+    <div>
+      <h1>Weather App</h1>
+      <div>
+        <p>1. weather</p>
+        <p>2.  Wind Speed</p>
+        <p>3. Pressure</p>
+        <p>0. Exit</p>
+        <input
+          type="number"
+          min="0"
+          max="3"
+          value={choice}
+          onChange={(e) => setChoice(parseInt(e.target.value))}
+        />
+        <input
+          type="text"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+        />
+        <button onClick={handleGetResult}>Get Result</button>
+        <p>Result: {result}</p>
+      </div>
+    </div>
+  );
+};
+
+export default App;
