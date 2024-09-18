@@ -7,50 +7,12 @@ executors:
       - image: circleci/python:3.8
     working_directory: ~/repo
 
-# Define reusable commands
-commands:
-  setup-venv:
-    description: "Set up Python virtual environment and install dependencies"
-    steps:
-      - run:
-          name: Create virtual environment
-          command: python -m venv venv
-      - run:
-          name: Activate virtual environment and install dependencies
-          command: |
-            . venv/bin/activate
-            pip install --upgrade pip
-            pip install -r requirements.txt
+
 
 jobs:
   build:
     executor: python-executor
     steps:
-      - checkout
-
-      # Restore pip cache
-      - restore_cache:
-          keys:
-            - v1-pip-cache-{{ checksum "requirements.txt" }}
-            - v1-pip-cache-
-
-      # Set up virtual environment and install dependencies
-      - setup-venv
-
-      # Save pip cache
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-pip-cache-{{ checksum "requirements.txt" }}
-
-      # Run tests
-      - run:
-          name: Run tests
-          command: |
-            . venv/bin/activate
-            pytest
-
-      # (Optional) Run the practice.py script directly
       - run:
           name: Run practice.py
           command: |
