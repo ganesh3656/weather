@@ -16,8 +16,11 @@ jobs:
       - run:
           name: Run practice.py
           command: |
-            python practice.py  # Executes your Python script located in the root directory
-
+            python practice.py
+      - run:
+          name: Run test2.py
+          command: |
+            python test2.py
 workflows:
   build_and_test:
     jobs:
