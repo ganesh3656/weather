@@ -7,16 +7,16 @@ executors:
       - image: circleci/python:3.8
     working_directory: ~/repo
 
-
-
 jobs:
   build:
     executor: python-executor
     steps:
+      - checkout  # Ensures your code is checked out from the repository
+
       - run:
           name: Run practice.py
           command: |
-            python practice.py
+            python practice.py  # Executes your Python script located in the root directory
 
 workflows:
   build_and_test:
