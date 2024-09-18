@@ -1,27 +1,44 @@
 version: 2.1
 
-# Define executors to reuse configuration across jobs
+# Define executors for different languages (Python and Java)
 executors:
   python-executor:
     docker:
       - image: circleci/python:3.8
     working_directory: ~/repo
 
+  java-executor:
+    docker:
+      - image: circleci/openjdk:11.0.2-jdk
+    working_directory: ~/repo
+
 jobs:
-  build:
+  # Job for Python
+  build-python:
     executor: python-executor
     steps:
-      - checkout  # Ensures your code is checked out from the repository
+      - checkout
+      - run:
+          name: Run Python script
+          command: python practice.py  # Run your Python script
 
+  # Job for Java
+  build-java:
+    executor: java-executor
+    steps:
+      - checkout
       - run:
-          name: Run practice.py
+          name: Compile Java file
           command: |
-            python practice.py
+            javac Main.java  # Compile your Java file
       - run:
-          name: Run test2.py
+          name: Run Java program
           command: |
-            python test2.py
+            java Main  # Run your Java program
+
 workflows:
-  build_and_test:
+  version: 2
+  build-and-test:
     jobs:
-      - build
+      - build-python  # First, run the Python job
+      - build-java    # Then, run the Java job
