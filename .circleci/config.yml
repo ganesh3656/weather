@@ -16,7 +16,6 @@ jobs:
       - run:
           name: Run practice.py
           command: |
-            . venv/bin/activate
             python practice.py
 
 workflows:
